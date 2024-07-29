@@ -6,8 +6,8 @@ const sleep = promisify(setTimeout);
 
 // Configuration variables
 const useHeadless = false;
-const username = 'EDTCNRWH10';
-const password = 'cnwms123';
+const username = 'YourUsername';
+const password = '123456';
 const canpin = 'cp01-CP07-15-2';
 const zhenpin = 'zp01-ZP07-14-01';
 
