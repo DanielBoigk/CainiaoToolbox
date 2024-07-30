@@ -31,6 +31,21 @@ class huopin:
             file.close()
     
 
+class element_attribute_contains_substring(object):
+    def __init__(self, locator, attribute, substring):
+        self.locator = locator
+        self.attribute = attribute
+        self.substring = substring
+
+    def __call__(self, driver):
+        element = driver.find_element(*self.locator)
+        attribute_value = element.get_attribute(self.attribute)
+        print(attribute_value)
+        return self.substring in attribute_value
+
+
+
+
 def resolve_huopin(huopin_var, driver, body):
     output = ""
     yc = False
@@ -70,7 +85,7 @@ def resolve_huopin(huopin_var, driver, body):
     except:
         print("Can't find Checkbox. Is there an element opened?")
         return False, False #, output
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable(checkbox))
+    #WebDriverWait(driver, 10).until(EC.element_to_be_clickable(checkbox))
     # Retrieve the value of the aria-checked attribute
     aria_checked = checkbox.get_attribute('aria-checked')
     location = ""
@@ -85,6 +100,7 @@ def resolve_huopin(huopin_var, driver, body):
             wait = WebDriverWait(driver, 20)  # Wait up to 20 seconds
             # Wait until the canzheng_element with the ID 'cabinetId' is present
             canzheng_element = wait.until(EC.presence_of_element_located((By.ID, 'cabinetId')))
+            shuliang_element = wait.until(EC.presence_of_element_located((By.ID, 'quantity')))
         except:
             print("cannot locate input")
             return False, False
@@ -102,19 +118,38 @@ def resolve_huopin(huopin_var, driver, body):
             wait = WebDriverWait(driver, 20)  # Wait up to 20 seconds
             # Wait until the canzheng_element with the ID 'cabinetId' is present
             canzheng_element = wait.until(EC.presence_of_element_located((By.ID, 'cabinetId')))
+            shuliang_element = wait.until(EC.presence_of_element_located((By.ID, 'quantity')))
         except:
             print("cannot locate input")
             return False, False
         #time.sleep(0.2)
         location = zhengpin
         yz = True
-    select_script = "arguments[0].select();"
-    driver.execute_script(select_script, canzheng_element)
-
+    #select_script = "arguments[0].select();"
+    #driver.execute_script(select_script, canzheng_element)
     # Send the BACKSPACE key to clear the selected content
-    canzheng_element.send_keys(Keys.BACKSPACE)
+    #canzheng_element.send_keys(Keys.BACKSPACE)
     #canzheng_element.clear()
+    
     canzheng_element.send_keys(location)
+    #aria_valuetext1 = canzheng_element.get_attribute("aria-valuetext")
+    F2_button = driver.find_element(By.CLASS_NAME, "next-btn.next-medium.next-btn-normal")
+    #F2_button.click()
+    #WebDriverWait(driver, 10).until(EC.text_to_be_present_in_element_value(canzheng_element.text,location))
+    #side_body= wait.until(EC.presence_of_element_located((By.ID, 'rehtml-lz716ye1')))
+    #time.sleep(0.2)
+    """
+    try:
+        WebDriverWait(driver, 10).until(element_attribute_contains_substring(canzheng_element, "aria-valuetext", location))
+    except:
+        print("Cannot write location into Field")
+    aria_valuetext = canzheng_element.get_attribute("aria-valuetext")
+    print(aria_valuetext)
+    """
+
+    time.sleep(0.3)
+    shuliang_element.send_keys(huopin_var.total_nr)
+    time.sleep(0.4)    
     body.send_keys(Keys.F2)
 
     # Get the current time
@@ -127,9 +162,11 @@ def resolve_huopin(huopin_var, driver, body):
     #time.sleep(0.5)
     element_text = ""
     wait = WebDriverWait(driver, 20)  # Wait for up to 10 seconds
-    F8_Button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@class='next-btn next-medium next-btn-primary' and @type='button']")))
-
-
+    try:
+        F8_Button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@class='next-btn next-medium next-btn-primary' and @type='button']")))
+    except:
+        print("Cannot resolve F8 Button in time")
+        return False, False
     table_elements = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//*[@data-next-table-row='0']")))
     for i in range(len(table_elements)):
         element_text += table_elements[i].text
@@ -148,8 +185,15 @@ def resolve_huopin(huopin_var, driver, body):
     """
     if ((location not in element_text) or (location =="")):
         body.send_keys(Keys.F4)
-        return False, False 
+        shuliang_element.send_keys(huopin_var.total_nr)
+        time.sleep(0.2)
+        body.send_keys(Keys.F2)
+        
     # Get the text content of the html element
+    
+    if ((location not in element_text) or (location =="")):
+        body.send_keys(Keys.F4)
+        return False, False
     """
     html_text = html_element.text
     checked = False
@@ -173,5 +217,6 @@ def resolve_huopin(huopin_var, driver, body):
     """    
     
     body.send_keys(Keys.F8)
+    #print("Target reached")
     return yz, yc #, output
     

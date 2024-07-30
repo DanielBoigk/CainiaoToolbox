@@ -153,7 +153,8 @@ def main():
             youz, youc = resolve_huopin(huopin_list[index],driver, body)
             you_zheng = you_zheng or youz
             you_can = you_can or youc
-            time.sleep(0.2)
+            if nr_huopin > 1:
+                time.sleep(0.7)
             body.send_keys(Keys.ESCAPE)
 
         #current_value_length = len(input_element.get_attribute('value'))
