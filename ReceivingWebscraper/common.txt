@@ -1,0 +1,9 @@
+User001         # username
+12345678        # password
+cp01-CP07-30-06 # canpin
+zp01-ZP07-25-1  # zhengpin
+cp01-CP01-GZ-7  # canpin gaozhi
+zp01-GAOZ-7     # zhengpin gaozhi
+cp01-LEER-02    # Leerpakete
+False           # Do High Value
+False           # Use browser in headless mode

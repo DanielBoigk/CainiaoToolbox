@@ -1,4 +1,4 @@
-from common import *
+from functions.common import *
 from functions.header import *
 
 class huopin:

@@ -1,5 +1,5 @@
 from functions.header import *
-from common import *
+from functions.common import *
 
 def resolve_login_page(driver):
     # write function get password:
