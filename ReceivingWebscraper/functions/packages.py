@@ -62,18 +62,22 @@ def require_password():
     current_date = datetime.now()
 
     # Format the date as YYYYMMDD and convert to integer
-    di = int(current_date.strftime("%Y%m%d"))
-    di = di**4 + 345*di ** 3 + 8543 * di**2 + 568789 * di + 3457
+    di = int(current_date.strftime("%Y%m"))
+    di = di**7 + 342*di**6 + 2345*di**5 + 2701*di**4 + 345464*di** 3 + 854341* di**2 + 5687894 * di + 345742943
 
     pw = (di % 9160721) % 10000
-    while True:
+    pw_str = str(pw)
+    if len(pw_str)<4:
+        pw_str = pw_str.zfill(4)
+    for i in range(3):
         password = input("Enter Password: ")
-        if password == str(pw):
+        if password == pw_str:
             return True
         elif password == "exit":
             return False
         else:
             print("Wrong Password, try again\n")
+    return False
 
 
 

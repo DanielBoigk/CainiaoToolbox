@@ -21,6 +21,9 @@ from functions.packages import *
 
 def main():
     #input_queue = queue.Queue()
+    #output_queue = queue.Queue()
+    #sql_queue = queue.Queue()
+    #package_thread = threading.Thread(target=do_packages, args=(input_queue, output_queue, sql_queue))
     #package_thread = threading.Thread(target=do_packages)
     do_packages()
     while(True):
